@@ -2,6 +2,8 @@ import game_framework
 from pico2d import *
 import random
 
+import run_stop_state
+
 class BackGround:
     def __init__(self):
         self.image = load_image('School_stage1.png')
@@ -55,44 +57,72 @@ class Floor:
 #   def draw(self):
 #        self.ruler.draw(self.rx, self.ry)
 
+class Character:
+    def __init__(self):
+        self.x, self.y = 0, 150
+        self.frame = 0
+        self.image = load_image('run.png')
+
+    def update(self):
+        self.frame = (self.frame + 1) % 6
+
+    def draw(self):
+        self.image.clip_draw(self.frame*220, 0, 400, 250, self.x, self.y)
+
+
 
 def handle_events():
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
+        elif event.type == SDL_KEYDOWN:
+            match event.key:
+                case pico2d.SDLK_ESCAPE:
+                    game_framework.quit()
+                case pico2d.SDLK_i:
+                    game_framework.push_state(run_stop_state)
+                case pico2d.SDLK_1:
+                    # 스킬 수행 - 1
+                    pass
 
 
 floor = None
 desk = None
 background = None
+character = None
 running = True
 
 # 초기화
 def enter():
-    global background, floor, desk, running
+    global background, floor, desk, character, running
     background = BackGround()
     floor = Floor()
     desk = Desk()
+    character = Character()
     running = True
 
 def exit():
-    global background, floor, desk
+    global background, floor, desk, character
     del background
     del floor
     del desk
+    del character
 
 
 def update():
     desk.update()
+    character.update()
 
 
 def draw():
     clear_canvas()
+    draw_wolrd()
+    update_canvas()
+
+def draw_wolrd():
     background.draw()
     floor.draw()
     desk.draw()
-    update_canvas()
+    character.draw()
 
