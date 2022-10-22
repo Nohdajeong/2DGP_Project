@@ -85,6 +85,8 @@ def handle_events():
                 case pico2d.SDLK_1:
                     # 스킬 수행 - 1
                     pass
+                case pico2d.SDLK_2:
+                    pass
 
 
 floor = None
