@@ -64,10 +64,10 @@ class Character:
         self.image = load_image('run.png')
 
     def update(self):
-        self.frame = (self.frame + 1) % 6
+        self.frame = (self.frame + 1) % 2
 
     def draw(self):
-        self.image.clip_draw(self.frame*220, 0, 400, 250, self.x, self.y)
+        self.image.clip_draw(self.frame*220, 0, 400, 260, self.x, self.y)
 
 
 
