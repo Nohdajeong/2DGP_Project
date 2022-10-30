@@ -1,3 +1,4 @@
+import Character
 import game_framework
 from pico2d import *
 import random
@@ -57,19 +58,6 @@ class Floor:
 #   def draw(self):
 #        self.ruler.draw(self.rx, self.ry)
 
-class Character:
-    def __init__(self):
-        self.x, self.y = 0, 150
-        self.frame = 0
-        self.image = load_image('run.png')
-
-    def update(self):
-        self.frame = (self.frame + 1) % 2
-
-    def draw(self):
-        self.image.clip_draw(self.frame*220, 0, 400, 260, self.x, self.y)
-
-
 
 def handle_events():
     events = get_events()
@@ -87,6 +75,8 @@ def handle_events():
                     pass
                 case pico2d.SDLK_2:
                     pass
+        else:
+            Character.handle_event(event)
 
 
 floor = None
