@@ -5,14 +5,14 @@ class Character:
         self.x, self.y = 0, 150
         self.frame = 0
         self.dir = 0
-        self.image = load_image('run.png')
+        self.image = load_image('run_animation.png')
 
     def update(self):
-        self.frame = (self.frame + 1) % 2
+        self.frame = (self.frame + 1) % 6
         self.y += self.dir * 1
 
     def draw(self):
-        self.image.clip_draw(self.frame*220, 0, 400, 260, self.x, self.y)
+        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
 
 class IDLE:
     @staticmethod
@@ -39,5 +39,5 @@ def handle_event(self, event):
                 self.dir += 1
     elif event.type == SDL_KEYUP:
         match event.key:
-            case pico2d.SDL_UP:
+            case pico2d.SDLK_UP:
                 self.dir += 1

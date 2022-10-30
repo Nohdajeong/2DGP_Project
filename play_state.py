@@ -1,8 +1,8 @@
-import Character
 import game_framework
 from pico2d import *
 import random
 
+import Character
 import run_stop_state
 
 class BackGround:
@@ -91,7 +91,7 @@ def enter():
     background = BackGround()
     floor = Floor()
     desk = Desk()
-    character = Character()
+    character = Character.Character()
     running = True
 
 def exit():
