@@ -1,5 +1,28 @@
 from pico2d import *
 
+#1 : 이벤트 정의
+UD, DD, UU, DU = range(4)
+
+key_event_table = {
+    (SDL_KEYDOWN, SDLK_UP) : UD,
+    (SDL_KEYDOWN, SDLK_DOWN) : DD,
+    (SDL_KEYUP, SDLK_UP) : UU,
+    (SDL_KEYUP, SDLK_DOWN) : DU
+}
+
+
+#2 : 상태 정의
+class IDLE:
+    @staticmethod
+    def enter(self, event):
+        print('ENTER IDLE')
+        self.dir = 0
+
+    @staticmethod
+    def exit(self):
+        print('EXIT IDLE')
+
+
 class Character:
     def __init__(self):
         self.x, self.y = 0, 150

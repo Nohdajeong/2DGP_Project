@@ -1,51 +1,15 @@
+import pico2d
+
 import game_framework
 from pico2d import *
-import random
 
-import Character
 import run_stop_state
 
-class BackGround:
-    def __init__(self):
-        self.image = load_image('School_stage1.png')
+from character import Character
+from floor import Floor
+from background import BackGround
+from desk import Desk
 
-    def draw(self):
-        self.image.draw(400, 220)
-
-
-class Floor:
-    def __init__(self):
-        self.floor = load_image('floor.png')
-
-    def draw(self):
-        self.floor.draw(400, 30)
-
-class Desk:
-    def __init__(self):
-        self.dx1, self.dy1 = random.randint(800, 1500), 100
-        self.dx2, self.dy2 = random.randint(800, 1500), 170
-        self.desk1 = load_image('desk_1.png')
-        self.desk2 = load_image('desk_2.png')
-
-    def update(self):
-        self.dx1 -= 1
-        self.dx2 -= 1
-        if self.dx1 < 0:
-            self.dx1 = random.randint(800, 1500)
-        if self.dx2 < 0:
-            self.dx2 = random.randint(800, 1500)
-
-    def draw(self):
-        self.desk1.draw(self.dx1, self.dy1)
-        self.desk2.draw(self.dx2, self.dy2)
-
-
-class Floor:
-    def __init__(self):
-        self.floor = load_image('floor.png')
-
-    def draw(self):
-        self.floor.draw(400, 30)
 
 # class Ruler:
 #    def __init__(self):
@@ -57,6 +21,13 @@ class Floor:
 
 #   def draw(self):
 #        self.ruler.draw(self.rx, self.ry)
+
+floor = None
+desk = None
+background = None
+character = None
+
+running = True
 
 
 def handle_events():
@@ -76,14 +47,8 @@ def handle_events():
                 case pico2d.SDLK_2:
                     pass
         else:
-            Character.handle_event(event)
+            character.handle_event(event)
 
-
-floor = None
-desk = None
-background = None
-character = None
-running = True
 
 # 초기화
 def enter():
@@ -91,9 +56,10 @@ def enter():
     background = BackGround()
     floor = Floor()
     desk = Desk()
-    character = Character.Character()
+    character = Character()
     running = True
 
+# 종료
 def exit():
     global background, floor, desk, character
     del background
@@ -106,7 +72,6 @@ def update():
     desk.update()
     character.update()
 
-
 def draw():
     clear_canvas()
     draw_wolrd()
@@ -117,4 +82,20 @@ def draw_wolrd():
     floor.draw()
     desk.draw()
     character.draw()
+
+def pause():
+    pass
+
+def resume():
+    pass
+
+def test_self():
+    import play_state
+
+    pico2d.open_canvas()
+    game_framework.run(play_state)
+    pico2d.clear_canvas()
+
+if __name__ == '__main__':
+    test_self()
 
