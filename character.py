@@ -19,8 +19,10 @@ class IDLE:
         self.dir = 0
 
     @staticmethod
-    def exit(self):
+    def exit(self, event):
         print('EXIT IDLE')
+        if event == DU:
+            self.jump()
 
 
 class Character:
@@ -29,6 +31,10 @@ class Character:
         self.frame = 0
         self.dir = 0
         self.image = load_image('run_animation.png')
+
+        self.event_que = []
+        self.cur_state = IDLE
+        self.cur_state.enter()
 
     def update(self):
         self.frame = (self.frame + 1) % 6

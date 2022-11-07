@@ -32,3 +32,18 @@ def handle_events():
             match event.key:
                 case pico2d.SDLK_ESCAPE:
                     game_framework.pop_state()
+
+
+def pause(): pass
+
+def resume(): pass
+
+def test_self():
+    import run_stop_state
+    pico2d.open_canvas()
+    game_framework.fill_states(play_state)
+    game_framework.run(run_stop_state)
+    pico2d.close_canvas()
+
+if __name__ == '__main__':
+    test_self()
