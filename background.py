@@ -6,3 +6,6 @@ class BackGround:
 
     def draw(self):
         self.image.draw(400, 220)
+
+    def update(self):
+        pass

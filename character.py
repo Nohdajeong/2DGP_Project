@@ -28,7 +28,7 @@ class IDLE:
 
     @staticmethod
     def draw(self):
-        pass
+        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
 
 
 class JUMP:
@@ -36,17 +36,16 @@ class JUMP:
         print('ENTER JUMP')
         if event == UD:
             self.y += 20
-        elif event == UU:
-            self.y -= 20
 
     def exit(self):
-        pass
+        print('EXIT JUMP')
 
     def do(self):
         self.frame = (self.frame + 1) % 6
+        self.y += self.dir
 
     def draw(self):
-        pass
+        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
 
 
 class SLIDE:
@@ -54,24 +53,24 @@ class SLIDE:
         print('ENTER SLIDE')
         if event == DD:
             self.y -= 20
-        elif event == DU:
-            self.y += 20
 
     def exit(self):
-        pass
+        print('EXIT SLIDE')
 
     def do(self):
         self.frame = (self.frame + 1) % 6
+        self.y -= self.dir
 
     def draw(self):
-        pass
+        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+
 
 
 #3. 상태 변환 구현
 next_state = {
-    IDLE:   {UD: JUMP, UU:IDLE, DD: SLIDE, DU: IDLE},
-    JUMP:   {UD: JUMP, UU:IDLE, DD: SLIDE, DU: IDLE},
-    SLIDE:  {UD: JUMP, UU:IDLE, DD: SLIDE, DU: IDLE}
+    IDLE:   {UD: JUMP, UU: JUMP, DD: SLIDE, DU: SLIDE},
+    JUMP:   {UD: JUMP, UU: JUMP, DD: SLIDE, DU: SLIDE},
+    SLIDE:  {UD: JUMP, UU: JUMP, DD: SLIDE, DU: SLIDE}
 }
 
 class Character:
@@ -83,22 +82,26 @@ class Character:
 
         self.event_que = []
         self.cur_state = IDLE
-        self.cur_state.enter()
+        self.cur_state.enter(self, None)
 
     def update(self):
-        self.frame = (self.frame + 1) % 6
-        self.y += self.dir * 1
+        self.cur_state.do(self)
+
+        if self.event_que:
+            event = self.event_que.pop()
+            self.cur_state.exit(self, event)
+            self.cur_state = next_state[self.cur_state][event]
+            self.cur_state.enter(self, event)
 
     def draw(self):
-        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+        self.cur_state.draw(self)
+
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
+    def handle_event(self, event):
+        if (event.type, event.key) in key_event_table:
+            key_event = key_event_table[(event.type, event.key)]
+            self.add_event(key_event)
 
 
-def handle_event(self, event):
-    if event.type == SDL_KEYDOWN:
-        match event.key:
-            case pico2d.SDLK_UP:
-                self.dir += 1
-    elif event.type == SDL_KEYUP:
-        match event.key:
-            case pico2d.SDLK_UP:
-                self.dir += 1

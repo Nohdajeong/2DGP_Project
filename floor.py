@@ -6,3 +6,6 @@ class Floor:
 
     def draw(self):
         self.floor.draw(400, 30)
+
+    def update(self):
+        pass

@@ -32,7 +32,12 @@ def handle_events():
             match event.key:
                 case pico2d.SDLK_ESCAPE:
                     game_framework.pop_state()
-
+                case pico2d.SDLK_F1:
+                    game_framework.pop_state()
+                case pico2d.SDLK_F2:
+                    print('재시작')
+                case pico2d.SDLK_F3:
+                    print('도움말')
 
 def pause(): pass
 
