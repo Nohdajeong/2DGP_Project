@@ -21,9 +21,58 @@ class IDLE:
     @staticmethod
     def exit(self, event):
         print('EXIT IDLE')
-        if event == DU:
-            self.jump()
 
+    @staticmethod
+    def do(self):
+        self.frame = (self.frame + 1) % 6
+
+    @staticmethod
+    def draw(self):
+        pass
+
+
+class JUMP:
+    def enter(self, event):
+        print('ENTER JUMP')
+        if event == UD:
+            self.y += 20
+        elif event == UU:
+            self.y -= 20
+
+    def exit(self):
+        pass
+
+    def do(self):
+        self.frame = (self.frame + 1) % 6
+
+    def draw(self):
+        pass
+
+
+class SLIDE:
+    def enter(self, event):
+        print('ENTER SLIDE')
+        if event == DD:
+            self.y -= 20
+        elif event == DU:
+            self.y += 20
+
+    def exit(self):
+        pass
+
+    def do(self):
+        self.frame = (self.frame + 1) % 6
+
+    def draw(self):
+        pass
+
+
+#3. 상태 변환 구현
+next_state = {
+    IDLE:   {UD: JUMP, UU:IDLE, DD: SLIDE, DU: IDLE},
+    JUMP:   {UD: JUMP, UU:IDLE, DD: SLIDE, DU: IDLE},
+    SLIDE:  {UD: JUMP, UU:IDLE, DD: SLIDE, DU: IDLE}
+}
 
 class Character:
     def __init__(self):
@@ -42,23 +91,6 @@ class Character:
 
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
-
-class IDLE:
-    @staticmethod
-    def enter():
-        pass
-
-    @staticmethod
-    def exit():
-        pass
-
-    @staticmethod
-    def do():
-        pass
-
-    @staticmethod
-    def draw():
-        pass
 
 
 def handle_event(self, event):
