@@ -80,11 +80,9 @@ def draw_wolrd():
     for game_object in game_world.all_objects():
         game_object.draw()
 
-def pause():
-    pass
+def pause(): pass
 
-def resume():
-    pass
+def resume(): pass
 
 def test_self():
     import play_state

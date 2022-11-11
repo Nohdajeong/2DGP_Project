@@ -1,5 +1,3 @@
-# 첫 구현 : 오브젝트 & 맵 배경
-
 import pico2d
 import play_state
 import title_state

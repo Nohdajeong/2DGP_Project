@@ -1,7 +1,6 @@
-import pico2d
-
-import game_framework
 from pico2d import *
+import game_framework
+
 import play_state
 
 image = None
@@ -14,8 +13,7 @@ def exit():
     global image
     del image
 
-def update():
-    pass
+def update(): pass
 
 def draw():
     clear_canvas()
@@ -31,7 +29,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN:
             match event.key:
                 case pico2d.SDLK_ESCAPE:
-                    game_framework.pop_state()
+                    game_framework.quit()
                 case pico2d.SDLK_F1:
                     game_framework.pop_state()
                 case pico2d.SDLK_F2:
@@ -42,6 +40,7 @@ def handle_events():
 def pause(): pass
 
 def resume(): pass
+
 
 def test_self():
     import run_stop_state

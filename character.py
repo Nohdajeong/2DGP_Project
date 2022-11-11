@@ -4,10 +4,10 @@ from pico2d import *
 UD, DD, UU, DU = range(4)
 
 key_event_table = {
-    (SDL_KEYDOWN, SDLK_UP) : UD,
-    (SDL_KEYDOWN, SDLK_DOWN) : DD,
-    (SDL_KEYUP, SDLK_UP) : UU,
-    (SDL_KEYUP, SDLK_DOWN) : DU
+    (SDL_KEYDOWN, SDLK_UP): UD,
+    (SDL_KEYDOWN, SDLK_DOWN): DD,
+    (SDL_KEYUP, SDLK_UP): UU,
+    (SDL_KEYUP, SDLK_DOWN): DU
 }
 
 
@@ -15,12 +15,10 @@ key_event_table = {
 class IDLE:
     @staticmethod
     def enter(self, event):
-        print('ENTER IDLE')
         self.dir = 0
 
     @staticmethod
-    def exit(self, event):
-        print('EXIT IDLE')
+    def exit(self, event): pass
 
     @staticmethod
     def do(self):
@@ -32,13 +30,14 @@ class IDLE:
 
 
 class JUMP:
-    def enter(self, event):
-        print('ENTER JUMP')
-        if event == UD:
-            self.y += 20
 
-    def exit(self):
-        print('EXIT JUMP')
+    def enter(self, event):
+        if event == UD:
+            self.y += 50
+        elif event == UU:
+            self.y -= 50
+
+    def exit(self, event): pass
 
     def do(self):
         self.frame = (self.frame + 1) % 6
@@ -50,12 +49,12 @@ class JUMP:
 
 class SLIDE:
     def enter(self, event):
-        print('ENTER SLIDE')
         if event == DD:
-            self.y -= 20
+            self.y -= 50
+        elif event == DU:
+            self.y += 50
 
-    def exit(self):
-        print('EXIT SLIDE')
+    def exit(self, event): pass
 
     def do(self):
         self.frame = (self.frame + 1) % 6
