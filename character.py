@@ -26,16 +26,16 @@ class IDLE:
 
     @staticmethod
     def draw(self):
-        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+        self.image.clip_draw(self.frame*100, 0, 200, 200, self.x, self.y)
 
 
 class JUMP:
 
     def enter(self, event):
         if event == UD:
-            self.y += 50
+            self.y += 100
         elif event == UU:
-            self.y -= 50
+            self.y -= 100
 
     def exit(self, event): pass
 
@@ -44,15 +44,15 @@ class JUMP:
         self.y += self.dir
 
     def draw(self):
-        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+        self.image.clip_draw(self.frame*100, 0, 200, 200, self.x, self.y)
 
 
 class SLIDE:
     def enter(self, event):
         if event == DD:
-            self.y -= 50
+            self.y -= 100
         elif event == DU:
-            self.y += 50
+            self.y += 100
 
     def exit(self, event): pass
 
@@ -61,7 +61,7 @@ class SLIDE:
         self.y -= self.dir
 
     def draw(self):
-        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+        self.image.clip_draw(self.frame*100, 0, 200, 200, self.x, self.y)
 
 
 
@@ -74,10 +74,10 @@ next_state = {
 
 class Character:
     def __init__(self):
-        self.x, self.y = 0, 150
+        self.x, self.y = 0, 130
         self.frame = 0
         self.dir = 0
-        self.image = load_image('run_animation.png')
+        self.image = load_image('run_animation_2.png')
 
         self.event_que = []
         self.cur_state = IDLE
