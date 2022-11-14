@@ -9,6 +9,7 @@ from floor import Floor
 from background import BackGround
 from desk import Desk1, Desk2
 from ruler import Ruler
+from heart import Heart
 
 # back
 background = None
@@ -22,6 +23,7 @@ ruler = None
 # character
 character = None
 running = True
+heart = None
 
 
 def handle_events():
@@ -32,6 +34,12 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.push_state(run_stop_state)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_1):
+            if Heart.heart1 == None:
+                Heart.heart1 = load_image('heart.png')
+                if Heart.heart2 == None:
+                    Heart.heart2 = load_image('heart.png')
+                    if Heart.heart3 == None:
+                        Heart.heart3 = load_image('heart.png')
             print('skill 1')
         else:
             character.handle_event(event)
@@ -60,6 +68,10 @@ def enter():
     character = Character()
     game_world.add_object(character, 1)
 
+    global heart
+    heart = Heart()
+    game_world.add_object(heart, 1)
+
     global running
     running = True
 
@@ -71,6 +83,13 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
+    if collide(character, desk1):
+        print("Collision character:desk1")
+
+    if collide(character, desk2):
+        print("Collision character:desk2")
+
+
 def draw():
     clear_canvas()
     draw_wolrd()
@@ -79,6 +98,17 @@ def draw():
 def draw_wolrd():
     for game_object in game_world.all_objects():
         game_object.draw()
+
+def collide(a, b):
+    la, ba, ra, ta = a.get_bb()
+    lb, bb, rb, tb = b.get_bb()
+
+    if la > rb: return False
+    if ra < lb: return False
+    if ta < bb: return False
+    if ba > tb: return False
+
+    return True
 
 def pause(): pass
 

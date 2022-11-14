@@ -74,7 +74,7 @@ next_state = {
 
 class Character:
     def __init__(self):
-        self.x, self.y = 0, 130
+        self.x, self.y = 100, 130
         self.frame = 0
         self.dir = 0
         self.image = load_image('run_animation_2.png')
@@ -94,6 +94,7 @@ class Character:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -103,4 +104,5 @@ class Character:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
-
+    def get_bb(self):
+        return self.x - 100, self.y - 100, self.x + 100, self.y + 100
