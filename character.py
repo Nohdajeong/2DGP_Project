@@ -15,6 +15,7 @@ key_event_table = {
 class IDLE:
     @staticmethod
     def enter(self, event):
+        self.x, self.y = 100, 130
         self.dir = 0
 
     @staticmethod
@@ -22,11 +23,12 @@ class IDLE:
 
     @staticmethod
     def do(self):
-        self.frame = (self.frame + 1) % 6
+        self.frame = (self.frame + 1) % 4
 
     @staticmethod
     def draw(self):
-        self.image.clip_draw(self.frame*100, 0, 200, 200, self.x, self.y)
+        self.run.clip_draw(self.frame*200, 0, 200, 200, self.x, self.y)
+        delay(0.05)
 
 
 class JUMP:
@@ -40,36 +42,33 @@ class JUMP:
     def exit(self, event): pass
 
     def do(self):
-        self.frame = (self.frame + 1) % 6
-        self.y += self.dir
+        self.frame = (self.frame + 1) % 3
 
     def draw(self):
-        self.image.clip_draw(self.frame*100, 0, 200, 200, self.x, self.y)
+        self.jump.clip_draw(self.frame*200, 0, 200, 200, self.x, self.y)
+        delay(0.05)
 
 
 class SLIDE:
     def enter(self, event):
-        if event == DD:
-            self.y -= 100
-        elif event == DU:
-            self.y += 100
+        self.x, self.y = 100, 80
 
     def exit(self, event): pass
 
     def do(self):
-        self.frame = (self.frame + 1) % 6
-        self.y -= self.dir
+        self.frame = (self.frame + 1) % 2
 
     def draw(self):
-        self.image.clip_draw(self.frame*100, 0, 200, 200, self.x, self.y)
+        self.slide.clip_draw(self.frame*200, 0, 200, 100, self.x, self.y)
+        delay(0.05)
 
 
 
 #3. 상태 변환 구현
 next_state = {
     IDLE:   {UD: JUMP, UU: JUMP, DD: SLIDE, DU: SLIDE},
-    JUMP:   {UD: JUMP, UU: JUMP, DD: SLIDE, DU: SLIDE},
-    SLIDE:  {UD: JUMP, UU: JUMP, DD: SLIDE, DU: SLIDE}
+    JUMP:   {UD: JUMP, UU: IDLE, DD: SLIDE, DU: IDLE},
+    SLIDE:  {UD: JUMP, UU: JUMP, DD: SLIDE, DU: IDLE}
 }
 
 class Character:
@@ -77,7 +76,9 @@ class Character:
         self.x, self.y = 100, 130
         self.frame = 0
         self.dir = 0
-        self.image = load_image('run_animation_2.png')
+        self.run = load_image('run_animation.png')
+        self.jump = load_image('jump.png')
+        self.slide = load_image('slide.png')
 
         self.event_que = []
         self.cur_state = IDLE
@@ -105,4 +106,4 @@ class Character:
             self.add_event(key_event)
 
     def get_bb(self):
-        return self.x - 100, self.y - 100, self.x + 100, self.y + 100
+        return self.x - 50, self.y - 50, self.x + 50, self.y + 50

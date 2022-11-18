@@ -103,16 +103,15 @@ def collide(a, b):
     la, ba, ra, ta = a.get_bb()
     lb, bb, rb, tb = b.get_bb()
 
-    if la > rb: return False
     if ra < lb: return False
-    if ta < bb: return False
-    if ba > tb: return False
 
     return True
 
 def pause(): pass
 
 def resume(): pass
+
+
 
 def test_self():
     import play_state

@@ -7,7 +7,7 @@ class Desk1:
         self.desk1 = load_image('desk_1.png')
 
     def update(self):
-        self.dx1 -= 1
+        self.dx1 -= 20
         if self.dx1 < 0:
             self.dx1 = random.randint(800, 1500)
 
@@ -23,7 +23,7 @@ class Desk2:
         self.desk2 = load_image('desk_2.png')
 
     def update(self):
-        self.dx2 -= 1
+        self.dx2 -= 20
         if self.dx2 < 0:
             self.dx2 = random.randint(800, 1500)
 

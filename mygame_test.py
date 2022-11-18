@@ -3,6 +3,7 @@ import game_framework
 
 import title_state
 import play_state
+import shop_state
 
 pico2d.open_canvas()
 # game_framework.run(title_state)
