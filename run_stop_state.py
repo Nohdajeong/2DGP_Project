@@ -1,17 +1,20 @@
 import json
-# import tomllib
 import pickle
 import os
 
 from pico2d import *
 import game_framework
 import game_world
+import server
 
 import play_state
 
 from character import Character
+from background import BackGround
 from floor import Floor
 from desk import Desk1
+from heart import Heart
+from coupon import Coupon
 
 image = None
 
@@ -26,6 +29,10 @@ def exit():
     del image
 
 def update(): pass
+
+def pause(): pass
+
+def resume(): pass
 
 def draw():
     clear_canvas()
@@ -43,16 +50,33 @@ def handle_events():
                 case pico2d.SDLK_ESCAPE:
                     game_framework.quit()
                 case pico2d.SDLK_F1:
-                    game_framework.pop_state()
+                    create_new_world()
+                    game_framework.change_state(play_state)
                 case pico2d.SDLK_F2:
-                    print('재시작')
+                    load_saved_world()
+                    game_framework.change_state(play_state)
                 case pico2d.SDLK_F3:
                     print('도움말')
 
-def pause(): pass
+def create_new_world():
+    server.character = Character()
+    game_world.add_object(server.character, 1)
+    game_world.add_collision_pairs(server.character, None, 'Character:desk')
+    game_world.add_collision_pairs(server.character, None, 'Character:coupon')
 
-def resume(): pass
+    background = BackGround()
+    game_world.add_object(background, 0)
 
+    coupons = [Coupon for i in range(50)]
+    game_world.add_objects(coupons, 1)
+    game_world.add_collision_pairs(None, coupons, 'Character:Coupon')
+
+def load_saved_world():
+    game_world.load()
+    for o in game_world.add_objects():
+        if isinstance(o, Character):
+            server.character = o
+            break
 
 def test_self():
     import run_stop_state
