@@ -23,52 +23,52 @@ key_event_table = {
 #2 : 상태 정의
 class IDLE:
     @staticmethod
-    def enter(self, event):
-        self.x, self.y = 100, 130
-        self.dir = 0
+    def enter(character, event):
+        character.x, character.y = 100, 130
+        character.dir = 0
 
     @staticmethod
-    def exit(self, event): pass
+    def exit(character, event): pass
 
     @staticmethod
-    def do(self):
-        self.frame = (self.frame + 1) % 4
+    def do(character):
+        character.frame = (character.frame + 1) % 4
 
     @staticmethod
-    def draw(self):
-        self.run.clip_draw(self.frame*200, 0, 200, 200, self.x, self.y)
+    def draw(character):
+        character.run.clip_draw(int(character.frame)*200, 0, 200, 200, character.x, character.y)
         delay(0.05)
 
 
 class JUMP:
 
-    def enter(self, event):
+    def enter(character, event):
         if event == UD:
-            self.y += 120
+            character.y += 120
         elif event == UU:
-            self.y -= 120
+            character.y -= 120
 
-    def exit(self, event): pass
+    def exit(character, event): pass
 
-    def do(self):
-        self.frame = (self.frame + 1) % 3
+    def do(character):
+        character.frame = (character.frame + 1) % 3
 
-    def draw(self):
-        self.jump.clip_draw(self.frame*200, 0, 200, 200, self.x, self.y)
+    def draw(character):
+        character.jump.clip_draw(int(character.frame)*200, 0, 200, 200, character.x, character.y)
         delay(0.05)
 
 
 class SLIDE:
-    def enter(self, event):
-        self.x, self.y = 100, 80
+    def enter(character, event):
+        character.x,character.y = 100, 80
 
-    def exit(self, event): pass
+    def exit(character, event): pass
 
-    def do(self):
-        self.frame = (self.frame + 1) % 2
+    def do(character):
+        character.frame = (character.frame + 1) % 2
 
-    def draw(self):
-        self.slide.clip_draw(self.frame*200, 0, 200, 100, self.x, self.y)
+    def draw(character):
+        character.slide.clip_draw(int(character.frame)*200, 0, 200, 100, character.x, character.y)
         delay(0.05)
 
 
@@ -84,7 +84,6 @@ class Character:
     def __init__(self):
         self.x, self.y = 100, 130
         self.frame = 0
-        self.dir = 0
         self.run = load_image('run_animation.png')
         self.jump = load_image('jump.png')
         self.slide = load_image('slide.png')
@@ -96,11 +95,16 @@ class Character:
     def update(self):
         self.cur_state.do(self)
 
-        if self.event_que:
+        if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
             self.cur_state = next_state[self.cur_state][event]
             self.cur_state.enter(self, event)
+
+    def set_background(self, bg):
+        self.bg = bg
+        self.x = self.bg.w / 2
+        self.y = self.bg.h / 2
 
     def draw(self):
         self.cur_state.draw(self)

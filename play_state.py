@@ -1,6 +1,11 @@
 from pico2d import *
 import game_framework
 import game_world
+import server
+
+import json
+import pickle
+import os
 
 import run_stop_state
 
@@ -9,6 +14,7 @@ from floor import Floor
 from background import BackGround
 from desk import Desk1
 from heart import Heart
+from coupon import Coupon
 
 # back
 background = None
@@ -16,6 +22,7 @@ floor = None
 
 # object
 desk1 = None
+coupon = None
 
 # character
 character = None
@@ -68,6 +75,7 @@ def enter():
     global running
     running = True
 
+
 # 종료
 def exit():
     game_world.clear()
@@ -76,8 +84,10 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    if collide(character, desk1):
-        print("Collision character:desk1")
+    for a, b, group in game_world.all_collision_pairs():
+        if collide(a, b):
+            a.handle_collision(b, group)
+            b.handle_collision(a, group)
 
 
 def draw():
