@@ -7,8 +7,7 @@ import run_stop_state
 from character import Character
 from floor import Floor
 from background import BackGround
-from desk import Desk1, Desk2
-from ruler import Ruler
+from desk import Desk1
 from heart import Heart
 
 # back
@@ -17,8 +16,6 @@ floor = None
 
 # object
 desk1 = None
-desk2 = None
-ruler = None
 
 # character
 character = None
@@ -55,13 +52,9 @@ def enter():
     game_world.add_object(floor, 0)
 
     # object
-    global desk1, desk2, ruler
+    global desk1
     desk1 = Desk1()
-    desk2 = Desk2()
-    ruler = Ruler()
     game_world.add_object(desk1, 1)
-    game_world.add_object(desk2, 1)
-    game_world.add_object(ruler, 1)
 
     # character
     global character
@@ -85,9 +78,6 @@ def update():
 
     if collide(character, desk1):
         print("Collision character:desk1")
-
-    if collide(character, desk2):
-        print("Collision character:desk2")
 
 
 def draw():

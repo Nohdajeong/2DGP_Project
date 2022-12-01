@@ -1,4 +1,13 @@
+import game_framework
 from pico2d import *
+
+import game_world
+import server
+
+# Action Speed
+TIME_PER_ACTION = 0.05
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+
 
 #1 : 이벤트 정의
 UD, DD, UU, DU = range(4)
@@ -35,9 +44,9 @@ class JUMP:
 
     def enter(self, event):
         if event == UD:
-            self.y += 100
+            self.y += 120
         elif event == UU:
-            self.y -= 100
+            self.y -= 120
 
     def exit(self, event): pass
 

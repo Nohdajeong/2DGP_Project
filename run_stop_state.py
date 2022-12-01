@@ -1,13 +1,25 @@
+import json
+# import tomllib
+import pickle
+import os
+
 from pico2d import *
 import game_framework
+import game_world
 
 import play_state
+
+from character import Character
+from floor import Floor
+from desk import Desk1
 
 image = None
 
 def enter():
     global image
     image = load_image('stop_select.png')
+    hide_cursor()
+    hide_lattice()
 
 def exit():
     global image

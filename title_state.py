@@ -7,6 +7,7 @@ background = None
 logo = None
 press = None
 
+
 def enter():
     global background, logo, press
     background = load_image('Original.png')
