@@ -8,29 +8,27 @@ import pickle
 import os
 
 import run_stop_state
+import ending_state
 
 from character import Character
 from floor import Floor
 from background import BackGround
 from desk import Desk1
-from heart import Heart
+from heart import *
 from coupon import Coupon
+from ruler import Ruler
 
-# back
-background = None
-floor = None
+score = 0
+heart_num = 3
+skill_num = 1
 
-# object
-desk1 = None
-coupon = None
-
-# character
-character = None
+time = None
+font = None
 running = True
-heart = None
 
 
 def handle_events():
+    global skill_num
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -38,39 +36,55 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.push_state(run_stop_state)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_1):
-            if Heart.heart1 == None:
-                Heart.heart1 = load_image('heart.png')
-                if Heart.heart2 == None:
-                    Heart.heart2 = load_image('heart.png')
-                    if Heart.heart3 == None:
-                        Heart.heart3 = load_image('heart.png')
-            print('skill 1')
+            if skill_num == 1:
+                skill_num -= 1
+                server.heart.heart_num += 1
         else:
-            character.handle_event(event)
+            server.character.handle_event(event)
 
 
 # 초기화
 def enter():
     # back
-    global background, floor
     background = BackGround()
     floor = Floor()
     game_world.add_object(background, 0)
     game_world.add_object(floor, 0)
 
     # object
-    global desk1
-    desk1 = Desk1()
-    game_world.add_object(desk1, 1)
+    server.desks = [Desk1() for i in range(2)]
+    game_world.add_objects(server.desks, 1)
+    game_world.add_collision_pairs(None, server.desks, 'character:desk')
+    # game_world.add_collision_pairs(None, server.desks, 'desk:coupon')
+    game_world.add_collision_pairs(None, server.desks, 'desk:ruler')
+    game_world.add_collision_pairs(server.desks, server.desks, 'desk:desk')
+
+    server.ruler = Ruler()
+    game_world.add_object(server.ruler, 1)
+    game_world.add_collision_pairs(None, server.ruler, 'character:ruler')
+    game_world.add_collision_pairs(None, server.ruler, 'desk:ruler')
+
 
     # character
-    global character
-    character = Character()
-    game_world.add_object(character, 1)
+    server.character = Character()
+    game_world.add_object(server.character, 2)
+    game_world.add_collision_pairs(server.character, None, 'character:desk')
+    # game_world.add_collision_pairs(server.character, None, 'character:coupon')
+    game_world.add_collision_pairs(server.character, None, 'character:ruler')
 
-    global heart
-    heart = Heart()
-    game_world.add_object(heart, 1)
+    server.heart = Heart()
+    game_world.add_object(server.heart, 1)
+
+    global font
+    font = load_font('CookieRun Regular.TTF', 30)
+
+    global time
+    time = (get_time()//1)
+
+    # server.coupon = Coupon()
+    # game_world.add_object(server.coupon, 2)
+    # game_world.add_collision_pairs(None, server.coupon, 'character:coupon')
+    # game_world.add_collision_pairs(None, server.coupon, 'desk:coupon')
 
     global running
     running = True
@@ -83,12 +97,23 @@ def exit():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+    delay(0.03)
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):
             a.handle_collision(b, group)
             b.handle_collision(a, group)
 
+    server.character.score += 5
+
+    global time
+    time = (get_time() // 1)
+
+    if (time > 300):
+        game_framework.change_state(ending_state)
+
+    if (server.heart.heart_num < 0):
+        game_framework.change_state(ending_state)
 
 def draw():
     clear_canvas()
@@ -99,18 +124,23 @@ def draw_wolrd():
     for game_object in game_world.all_objects():
         game_object.draw()
 
+    font.draw(50, 550, f'score : {int(server.character.score)}', (0, 0, 0))
+    font.draw(730, 550, f'{int(server.heart.heart_num)}', (100, 0, 0))
+
 def collide(a, b):
     la, ba, ra, ta = a.get_bb()
     lb, bb, rb, tb = b.get_bb()
 
+    if la > rb: return False
     if ra < lb: return False
+    if ta < bb: return False
+    if ba > tb: return False
 
     return True
 
 def pause(): pass
 
 def resume(): pass
-
 
 
 def test_self():

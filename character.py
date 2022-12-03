@@ -3,11 +3,12 @@ from pico2d import *
 
 import game_world
 import server
+import heart
 
 # Action Speed
-TIME_PER_ACTION = 0.05
+TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-
+FRAMES_PER_ACTION = 4
 
 #1 : 이벤트 정의
 UD, DD, UU, DU = range(4)
@@ -32,16 +33,14 @@ class IDLE:
 
     @staticmethod
     def do(character):
-        character.frame = (character.frame + 1) % 4
+        character.frame = (character.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
 
     @staticmethod
     def draw(character):
         character.run.clip_draw(int(character.frame)*200, 0, 200, 200, character.x, character.y)
-        delay(0.05)
 
 
 class JUMP:
-
     def enter(character, event):
         if event == UD:
             character.y += 120
@@ -51,11 +50,10 @@ class JUMP:
     def exit(character, event): pass
 
     def do(character):
-        character.frame = (character.frame + 1) % 3
+        character.frame = (character.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
 
     def draw(character):
         character.jump.clip_draw(int(character.frame)*200, 0, 200, 200, character.x, character.y)
-        delay(0.05)
 
 
 class SLIDE:
@@ -65,11 +63,10 @@ class SLIDE:
     def exit(character, event): pass
 
     def do(character):
-        character.frame = (character.frame + 1) % 2
+        character.frame = (character.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
 
     def draw(character):
         character.slide.clip_draw(int(character.frame)*200, 0, 200, 100, character.x, character.y)
-        delay(0.05)
 
 
 
@@ -84,6 +81,8 @@ class Character:
     def __init__(self):
         self.x, self.y = 100, 130
         self.frame = 0
+        self.gravity = 0.0
+        self.score = 0
         self.run = load_image('run_animation.png')
         self.jump = load_image('jump.png')
         self.slide = load_image('slide.png')
@@ -108,7 +107,7 @@ class Character:
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -120,3 +119,10 @@ class Character:
 
     def get_bb(self):
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+
+    def handle_collision(self, other, group):
+        if group == 'character:desk':
+            server.character.score -= 20
+
+        # if group == 'character:coupon':
+        #     server.character.score += 5

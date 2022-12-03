@@ -2,7 +2,7 @@
 # layer 1 : Foreground Objects
 import pickle
 
-objects = [[], []]
+objects = [[], [], []]
 
 # collision informaiton
 # key 'character:desk' string
@@ -19,9 +19,10 @@ def remove_object(o):
     for layer in objects:
         if o in layer:
             layer.remove(o)
-            del o
+            remove_collision_object(o)
+            # del o
             return
-        raise ValueError('Trying destroy non existing object')
+    raise ValueError('Trying destroy non existing object')
 
 def all_objects():
     for layer in objects:
@@ -29,10 +30,10 @@ def all_objects():
             yield o
 
 def clear():
-    for o in all_objects():
-        del o
-    for layer in objects:
-        layer.clear()
+    global objects, collision_group
+
+    objects =[[], []]
+    collision_group = dict()
 
 def add_collision_pairs(a, b, group):
 
@@ -51,8 +52,6 @@ def add_collision_pairs(a, b, group):
             collision_group[group][0] += b
         else:
             collision_group[group][0].append(b)
-
-    print(collision_group)
 
 
 
