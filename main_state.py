@@ -10,9 +10,9 @@ time = 0.0
 
 def enter():
     global background, character, talk
-    background = load_image('School_main.png')
-    character = load_image('run_character.png')
-    talk = load_image('talk.png')
+    background = load_image('resource/School_main.png')
+    character = load_image('resource/run_character.png')
+    talk = load_image('resource/talk.png')
 
 def exit():
     global background, character, talk

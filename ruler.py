@@ -7,7 +7,7 @@ class Ruler:
     MAX_FALL_SPEED = 30
     def __init__(self):
         self.rx, self.ry = 800, 600
-        self.ruler = load_image('ruler.png')
+        self.ruler = load_image('resource/ruler.png')
         self.fall_speed = random.randint(Ruler.MIN_FALL_SPEED, Ruler.MAX_FALL_SPEED)
 
     def __getstate__(self):

@@ -1,11 +1,9 @@
 from pico2d import *
 
-import server
-
 class BackGround:
     def __init__(self):
-        self.image = load_image('School_stage1.png')
-        self.bgm = load_music('run_music.mp3')
+        self.image = load_image('resource/School_stage1.png')
+        self.bgm = load_music('resource/run_music.ogg')
         self.bgm.set_volume(32)
         self.bgm.repeat_play()
 

@@ -15,7 +15,7 @@ from floor import Floor
 from background import BackGround
 from desk import Desk1
 from heart import *
-from coupon import Coupon
+from chalk import Chalk
 from ruler import Ruler
 
 score = 0
@@ -55,22 +55,26 @@ def enter():
     server.desks = [Desk1() for i in range(2)]
     game_world.add_objects(server.desks, 1)
     game_world.add_collision_pairs(None, server.desks, 'character:desk')
-    # game_world.add_collision_pairs(None, server.desks, 'desk:coupon')
     game_world.add_collision_pairs(None, server.desks, 'desk:ruler')
     game_world.add_collision_pairs(server.desks, server.desks, 'desk:desk')
 
-    server.ruler = Ruler()
-    game_world.add_object(server.ruler, 1)
-    game_world.add_collision_pairs(None, server.ruler, 'character:ruler')
-    game_world.add_collision_pairs(None, server.ruler, 'desk:ruler')
+    server.rulers = [Ruler() for i in range(1)]
+    game_world.add_objects(server.rulers, 1)
+    game_world.add_collision_pairs(None, server.rulers, 'character:ruler')
+    game_world.add_collision_pairs(None, server.rulers, 'desk:ruler')
+
+    server.chalks = [Chalk() for i in range(1)]
+    game_world.add_objects(server.chalks, 1)
+    game_world.add_collision_pairs(None, server.chalks, 'character:chalk')
 
 
     # character
     server.character = Character()
-    game_world.add_object(server.character, 2)
+    game_world.add_object(server.character, 1)
     game_world.add_collision_pairs(server.character, None, 'character:desk')
-    # game_world.add_collision_pairs(server.character, None, 'character:coupon')
     game_world.add_collision_pairs(server.character, None, 'character:ruler')
+    game_world.add_collision_pairs(server.character, None, 'character:chalk')
+
 
     server.heart = Heart()
     game_world.add_object(server.heart, 1)
@@ -80,11 +84,6 @@ def enter():
 
     global time
     time = (get_time()//1)
-
-    # server.coupon = Coupon()
-    # game_world.add_object(server.coupon, 2)
-    # game_world.add_collision_pairs(None, server.coupon, 'character:coupon')
-    # game_world.add_collision_pairs(None, server.coupon, 'desk:coupon')
 
     global running
     running = True
@@ -108,9 +107,6 @@ def update():
 
     global time
     time = (get_time() // 1)
-
-    if (time > 300):
-        game_framework.change_state(ending_state)
 
     if (server.heart.heart_num < 0):
         game_framework.change_state(ending_state)

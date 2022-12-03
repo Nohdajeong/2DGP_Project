@@ -11,10 +11,10 @@ bgm = None
 
 def enter():
     global background, logo, press, bgm
-    background = load_image('Original.png')
-    logo = load_image('logo.png')
-    press = load_image('press_button.png')
-    bgm = load_music('bgm_lobby_cookieland.mp3')
+    background = load_image('resource/Original.png')
+    logo = load_image('resource/logo.png')
+    press = load_image('resource/press_button.png')
+    bgm = load_music('resource/bgm_lobby.ogg')
     bgm.set_volume(32)
     bgm.repeat_play()
 

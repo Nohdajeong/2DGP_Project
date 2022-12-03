@@ -11,10 +11,8 @@ num = 0
 
 def enter():
     global image, tip
-    image = load_image('stop_select.png')
-    tip = load_image('tip.png')
-    hide_cursor()
-    hide_lattice()
+    image = load_image('resource/stop_select.png')
+    tip = load_image('resource/tip.png')
 
 def exit():
     global image, tip
@@ -45,7 +43,6 @@ def draw():
 
 def handle_events():
     global num
-
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:

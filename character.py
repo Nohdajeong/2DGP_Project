@@ -55,10 +55,9 @@ class JUMP:
     def draw(character):
         character.jump.clip_draw(int(character.frame)*200, 0, 200, 200, character.x, character.y)
 
-
 class SLIDE:
     def enter(character, event):
-        character.x,character.y = 100, 80
+        character.x, character.y = 100, 80
 
     def exit(character, event): pass
 
@@ -78,14 +77,19 @@ next_state = {
 }
 
 class Character:
+    jump_sound = None
     def __init__(self):
         self.x, self.y = 100, 130
         self.frame = 0
         self.gravity = 0.0
         self.score = 0
-        self.run = load_image('run_animation.png')
-        self.jump = load_image('jump.png')
-        self.slide = load_image('slide.png')
+        self.run = load_image('resource/run_animation.png')
+        self.jump = load_image('resource/jump.png')
+        self.slide = load_image('resource/slide.png')
+
+        if self.jump_sound is None:
+            self.jump_bgm = load_music('resource/jump.ogg')
+            self.jump_bgm.set_volume(32)
 
         self.event_que = []
         self.cur_state = IDLE

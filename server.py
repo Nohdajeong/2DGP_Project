@@ -1,6 +1,6 @@
 character = None
 background = None
 desk = None
-coupon = None
+chalk = None
 ruler = None
 heart = None

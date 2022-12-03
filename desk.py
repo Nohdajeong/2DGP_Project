@@ -10,8 +10,8 @@ class Desk1:
     heart_num = 3
 
     def __init__(self):
-        self.dx1, self.dy1 = random.randint(800, 1500), 100
-        self.desk1 = load_image('desk_1.png')
+        self.dx1, self.dy1 = random.randint(1000, 1500), 100
+        self.desk1 = load_image('resource/desk_1.png')
         self.fall_speed = random.randint(Desk1.MIN_FALL_SPEED, Desk1.MAX_FALL_SPEED)
 
     def __getstate__(self):
@@ -23,9 +23,9 @@ class Desk1:
         self.__dict__.update(state)
 
     def update(self):
-        self.dx1 -= 20
+        self.dx1 -= self.fall_speed
         if self.dx1 < 0:
-            self.dx1 = random.randint(800, 1500)
+            self.dx1 = random.randint(1000, 1500)
 
     def draw(self):
         self.desk1.draw(self.dx1, self.dy1)

@@ -6,7 +6,7 @@ class Heart:
 
     def __init__(self):
         self.x, self.y = 670, 550
-        self.heart = load_image('heart.png')
+        self.heart = load_image('resource/heart.png')
         self.heart_num = 5
 
     def update(self):
